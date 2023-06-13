@@ -3,11 +3,15 @@ from django.core.validators import EMPTY_VALUES,RegexValidator,validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate, login, logout
+from .helper import send_forget_mail 
+import uuid
 
 # Create your views here.
 
 
 def loginn(request):
+    error = False
+    message = ""
     # return render(request, 'pages/login.html')
     if request.method == "POST":
         email = request.POST.get('email', None)
@@ -20,11 +24,18 @@ def loginn(request):
                 login(request, auth_user)
                 return redirect('home1')
             else:
-                print("mot de pass incorrecte")
+                error = True
+                message = "Wrong password"
+                print("Wrong password")
         else:
+            error = True
+            message = "User does not exist"
             print("User does not exist")
-        
-    return render(request, 'pages/login.html')
+    context = {
+        'error':error,
+        'message':message
+    }
+    return render(request, 'pages/login.html',context)
 
 
 def register(request):
@@ -79,3 +90,32 @@ def home(request):
 def log_out(request):
     logout(request)
     return redirect('login')
+
+def forget_password(request):
+    error=False
+    message=""
+    try:
+       if request.method=='POST':
+           email= request.POST.get('email')
+           
+           if not User.objects.filter(email=email).first():
+               error=True
+               message = "User not found"
+               context = {
+                    'error':error,
+                    'message':message
+                }   
+               return render(request, 'pages/forgot-password.html', context)
+           
+           user_obj=User.objects.get(email=email)
+           token=str(uuid.uuid4)
+           send_forget_mail(user_obj,token)
+
+    except Exception as e:
+        print(e)
+        
+        
+    return render(request, 'pages/forgot-password.html')
+
+def reset_password(request):
+    return render(request, 'pages/reset-password.html')
