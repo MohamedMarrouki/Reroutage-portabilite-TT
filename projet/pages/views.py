@@ -1,9 +1,21 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
+from . models import myuploadfile
+from django.conf import settings as ss
+from django.db import OperationalError
+
 
 # Create your views here.
-def home(request):
-   return render(request, 'pages/login.html')
+# def home(request):
+#    return render(request, 'pages/login.html')
    #return HttpResponse('bonjour')
+   
+nomfich=''
+
+def home(request):
+    context = {
+        "data":myuploadfile.objects.all(),
+    }
+    return render(request,"pages/upload_file_final.html",context)
    
 def replace(nom_fich):
    with open(nom_fich, 'r') as file:
@@ -17,14 +29,35 @@ def replace(nom_fich):
    with open(nom_fich_modif, 'w') as file:
     # Write the modified content back to the file
     file.write(modified_content)
-    return nom_fich_modif
+   return nom_fich_modif
     
 def read_fich(nom_fich):
    import pandas as pd
    nom_modif=replace(nom_fich)
    cdr_file = pd.read_csv(nom_modif)
    # cdr_file.columns
-   cdr18=cdr_file["r"].values
-   cdr19=cdr_file["s"].values
+   cdr18=cdr_file["Intrunk"].values
+   cdr19=cdr_file["Outtrunk"].values
    cdr18=cdr18.reshape(-1,1)
    cdr19=cdr19.reshape(-1,1)
+   print(cdr18)
+   print(cdr19)
+
+def send_files(request):
+    if request.method == "POST" :
+        name = request.POST.get('filename', None)
+        myfile = request.FILES.getlist('uploadfoles')
+        nomfich=myfile
+        #print(nomfich[0])
+        print('aaaaaaaaa')
+        try:
+         myuploadfile(myfiles=nomfich[0]).save()
+        except OperationalError as e:
+           print(e)
+        read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
+      #   print(nomfich1)
+      #   for f in myfile:
+      
+        
+        
+    return redirect("home")
