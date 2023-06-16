@@ -1,6 +1,6 @@
 from django.contrib import admin
-from . models import myuploadfile
-
-
-
-admin.site.register(myuploadfile)
+from . models import *
+# from . models import myuploadfile
+# admin.site.register(myuploadfile)
+admin.site.register(Orange)
+admin.site.register(Ooredoo)

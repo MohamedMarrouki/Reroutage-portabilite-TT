@@ -1,5 +1,5 @@
 from django.shortcuts import render,redirect
-from . models import myuploadfile
+from . models import *
 from django.conf import settings as ss
 from django.db import OperationalError
 
@@ -16,6 +16,7 @@ def home(request):
         "data":myuploadfile.objects.all(),
     }
     return render(request,"pages/upload_file_final.html",context)
+   # return render(request,"pages/upload_file_final.html")
    
 def replace(nom_fich):
    with open(nom_fich, 'r') as file:
@@ -33,6 +34,8 @@ def replace(nom_fich):
     
 def read_fich(nom_fich):
    import pandas as pd
+   import numpy as np
+   n=0
    nom_modif=replace(nom_fich)
    cdr_file = pd.read_csv(nom_modif)
    # cdr_file.columns
@@ -42,6 +45,26 @@ def read_fich(nom_fich):
    cdr19=cdr19.reshape(-1,1)
    print(cdr18)
    print(cdr19)
+   ooredoo_out=np.count_nonzero(np.equal(cdr19, 'OUTODOO'))
+   orange_out=np.count_nonzero(np.equal(cdr19, 'OUTORGO'))
+   ooredoo_in=np.count_nonzero(np.equal(cdr18, 'INORDI'))
+   orange_in=np.count_nonzero(np.equal(cdr18, 'INORGI'))
+   print(ooredoo_out)
+   print(orange_out)
+   print(ooredoo_in)
+   print(orange_in)
+   ooredoo=Ooredoo(in_OO=ooredoo_in,out_OO=ooredoo_out)
+   orange=Orange(in_OR=orange_in,out_OR=orange_out)
+   ooredoo.save()
+   orange.save()
+   # print(cdr18.shape[0])
+   # print(cdr18[5][0])
+   # for i in range(int(cdr19.shape[0])):
+   #    if str(cdr19[i][0]) == "OUTODOO":
+   #       n=n+1
+   # print(n)
+   
+
 
 def send_files(request):
     if request.method == "POST" :
@@ -49,12 +72,12 @@ def send_files(request):
         myfile = request.FILES.getlist('uploadfoles')
         nomfich=myfile
         #print(nomfich[0])
-        print('aaaaaaaaa')
         try:
          myuploadfile(myfiles=nomfich[0]).save()
         except OperationalError as e:
            print(e)
         read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
+        
       #   print(nomfich1)
       #   for f in myfile:
       
