@@ -2,6 +2,7 @@ from django.shortcuts import render,redirect
 from . models import *
 from django.conf import settings as ss
 from django.db import OperationalError
+from django.db.models import Sum
 
 
 # Create your views here.
@@ -64,7 +65,30 @@ def read_fich(nom_fich):
    #       n=n+1
    # print(n)
    
+def somme():
+   total_in_oo = Ooredoo.objects.aggregate(total_in_oo=Sum('in_OO'))
+   total_out_oo = Ooredoo.objects.aggregate(total_out_oo=Sum('out_OO'))
+   sum_of_in_oo = total_in_oo['total_in_oo']
+   sum_of_out_oo = total_out_oo['total_out_oo']
+   total_in_or = Orange.objects.aggregate(total_in_or=Sum('in_OR'))
+   total_out_or = Orange.objects.aggregate(total_out_or=Sum('out_OR'))
+   sum_of_in_or = total_in_or['total_in_or']
+   sum_of_out_or = total_out_or['total_out_or']
+   print(int(sum_of_in_or))
+   print(int(sum_of_out_or))
+   print(int(sum_of_in_oo))
+   print(int(sum_of_out_oo))
+   return sum_of_in_oo,sum_of_out_oo,sum_of_in_or,sum_of_out_or
 
+def chart(request):
+   oo_in=somme()[0]
+   oo_out=somme()[1]
+   or_in=somme()[2]
+   or_out=somme()[3]
+   op_in_out_list = ['Ooredoo In', 'Ooredoo Out', 'Orange In', 'Orange Out']
+   number_list = [oo_in, oo_out, or_in, or_out]
+   context = {'op_in_out_list':op_in_out_list, 'number_list':number_list}
+   return render(request, 'pages/chart.html', context)
 
 def send_files(request):
     if request.method == "POST" :
@@ -77,6 +101,7 @@ def send_files(request):
         except OperationalError as e:
            print(e)
         read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
+        somme()
         
       #   print(nomfich1)
       #   for f in myfile:
