@@ -18,7 +18,7 @@ def home(request):
         "data":myuploadfile.objects.all(),
     }
     return render(request,"pages/upload_file_final.html",context)
-   # return render(request,"pages/upload_file_final.html")
+   #return render(request,"pages/upload_file_final.html")
    
 def replace(nom_fich):
    with open(nom_fich, 'r') as file:
@@ -93,12 +93,12 @@ def chart(request):
         nom_utilisateur = user.username
         email_utilisateur = user.email
         nom = user.last_name + " " + user.first_name
-        # prenom = user.first_name
    context = {'op_in_out_list':op_in_out_list, 'number_list':number_list,
               'nom_utilisateur': nom_utilisateur,
                'email_utilisateur': email_utilisateur,
                'nom': nom}
    return render(request, 'pages/chart.html', context)
+   
 
 def send_files(request):
     if request.method == "POST" :
@@ -107,15 +107,12 @@ def send_files(request):
         nomfich=myfile
         #print(nomfich[0])
         try:
-         myuploadfile(myfiles=nomfich[0]).save()
+         myuploadfile(myfiles=nomfich[0],time).save()
         except OperationalError as e:
            print(e)
         read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
         somme()
         
-      #   print(nomfich1)
-      #   for f in myfile:
-      
-        
-        
+   #    #   print(nomfich1)
+   #    #   for f in myfile:
     return redirect("home")
