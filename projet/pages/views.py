@@ -3,6 +3,7 @@ from . models import *
 from django.conf import settings as ss
 from django.db import OperationalError
 from django.db.models import Sum
+from django.contrib import auth
 
 
 # Create your views here.
@@ -87,7 +88,16 @@ def chart(request):
    or_out=somme()[3]
    op_in_out_list = ['Ooredoo In', 'Ooredoo Out', 'Orange In', 'Orange Out']
    number_list = [oo_in, oo_out, or_in, or_out]
-   context = {'op_in_out_list':op_in_out_list, 'number_list':number_list}
+   user = auth.get_user(request)
+   if user.is_authenticated:
+        nom_utilisateur = user.username
+        email_utilisateur = user.email
+        nom = user.last_name + " " + user.first_name
+        # prenom = user.first_name
+   context = {'op_in_out_list':op_in_out_list, 'number_list':number_list,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom}
    return render(request, 'pages/chart.html', context)
 
 def send_files(request):

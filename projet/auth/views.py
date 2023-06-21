@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect
+from django.contrib import auth
 from django.core.validators import EMPTY_VALUES,RegexValidator,validate_email
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
@@ -85,7 +86,17 @@ def register(request):
 
 @login_required(login_url='login')
 def home(request):
-   return render(request, 'pages/index.html')
+    user = auth.get_user(request)
+    if user.is_authenticated:
+        nom_utilisateur = user.username
+        email_utilisateur = user.email
+        nom = user.last_name + " " + user.first_name
+        # prenom = user.first_name
+    context = {'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
+               }
+    return render(request, 'pages/index.html', context)
 
 def log_out(request):
     logout(request)
@@ -119,3 +130,12 @@ def forget_password(request):
 
 def reset_password(request):
     return render(request, 'pages/reset-password.html')
+
+def ma_vue(request):
+    user = auth.get_user(request)
+    if user.is_authenticated:
+        nom_utilisateur = user.username
+        context = {'nom_utilisateur': nom_utilisateur}
+        return render(request, 'pages/index.html', context)
+
+

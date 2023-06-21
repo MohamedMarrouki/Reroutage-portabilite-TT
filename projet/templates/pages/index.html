@@ -13,6 +13,8 @@
     <title>SB Admin 2 - Dashboard</title>
 
     <!-- Custom fonts for this template-->
+    <link rel="stylesheet" type="text/css" href="//cdn.datatables.net/1.10.12/css/jquery.dataTables.min.css" />
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">
     <link href="{% static 'web/vendor/fontawesome-free/css/all.min.css' %}" rel="stylesheet" type="text/css">
     <link
         href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i"
@@ -24,7 +26,7 @@
 </head>
 
 <body id="page-top">
-
+    {% block header %}
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -32,11 +34,13 @@
         <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
 
             <!-- Sidebar - Brand -->
-            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="index.html">
-                <div class="sidebar-brand-icon rotate-n-15">
+            <a class="sidebar-brand d-flex align-items-center justify-content-center" href="{% url 'home1' %}">
+                {% comment %} <div class="sidebar-brand-icon rotate-n-15">
                     <i class="fas fa-laugh-wink"></i>
-                </div>
-                <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div>
+                </div> {% endcomment %}
+                <img src="{% static 'web/img/logo_telecom.png' %}"
+                                            alt="..." width="105" height="105">
+                {% comment %} <div class="sidebar-brand-text mx-3">SB Admin <sup>2</sup></div> {% endcomment %}
             </a>
 
             <!-- Divider -->
@@ -44,7 +48,7 @@
 
             <!-- Nav Item - Dashboard -->
             <li class="nav-item active">
-                <a class="nav-link" href="index.html">
+                <a class="nav-link" href="{% url 'home1' %}">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
                     <span>Dashboard</span></a>
             </li>
@@ -56,7 +60,7 @@
             <div class="sidebar-heading">
                 Interface
             </div>
-
+            
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
                 <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo"
@@ -123,7 +127,7 @@
 
             <!-- Nav Item - Charts -->
             <li class="nav-item">
-                <a class="nav-link" href="charts.html">
+                <a class="nav-link" href="{% url 'chart' %}">
                     <i class="fas fa-fw fa-chart-area"></i>
                     <span>Charts</span></a>
             </li>
@@ -142,14 +146,7 @@
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
-            <!-- Sidebar Message -->
-            <div class="sidebar-card d-none d-lg-flex">
-                <img class="sidebar-card-illustration mb-2" src="{% static 'web/img/undraw_rocket.svg' %}" alt="...">
-                <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
-                <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div>
-
+            
         </ul>
         <!-- End of Sidebar -->
 
@@ -168,7 +165,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form
+                    {% comment %} <form
                         class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..."
@@ -179,13 +176,13 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> {% endcomment %}
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
                         <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
+                        {% comment %} <li class="nav-item dropdown no-arrow d-sm-none">
                             <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
@@ -206,10 +203,10 @@
                                     </div>
                                 </form>
                             </div>
-                        </li>
+                        </li> {% endcomment %}
 
                         <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        {% comment %} <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-bell fa-fw"></i>
@@ -257,10 +254,10 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Show All Alerts</a>
                             </div>
-                        </li>
+                        </li> {% endcomment %}
 
                         <!-- Nav Item - Messages -->
-                        <li class="nav-item dropdown no-arrow mx-1">
+                        {% comment %} <li class="nav-item dropdown no-arrow mx-1">
                             <a class="nav-link dropdown-toggle" href="#" id="messagesDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-envelope fa-fw"></i>
@@ -323,7 +320,7 @@
                                 </a>
                                 <a class="dropdown-item text-center small text-gray-500" href="#">Read More Messages</a>
                             </div>
-                        </li>
+                        </li> {% endcomment %}
 
                         <div class="topbar-divider d-none d-sm-block"></div>
 
@@ -331,25 +328,25 @@
                         <li class="nav-item dropdown no-arrow">
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button"
                                 data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Douglas McGee</span>
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">{{ nom }}</span>
                                 <img class="img-profile rounded-circle"
                                     src="{% static 'web/img/undraw_profile.svg' %}">
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in"
                                 aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="#">
+                                <a class="dropdown-item">
                                     <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Profile
+                                    {{ email_utilisateur }}
                                 </a>
-                                <a class="dropdown-item" href="#">
+                                {% comment %} <a class="dropdown-item" href="#">
                                     <i class="fas fa-cogs fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Settings
-                                </a>
-                                <a class="dropdown-item" href="#">
+                                </a> {% endcomment %}
+                                {% comment %} <a class="dropdown-item" href="#">
                                     <i class="fas fa-list fa-sm fa-fw mr-2 text-gray-400"></i>
                                     Activity Log
-                                </a>
+                                </a> {% endcomment %}
                                 <div class="dropdown-divider"></div>
                                 <a class="dropdown-item" href="{% url 'log_out' %}">
                                     <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -361,20 +358,22 @@
                     </ul>
 
                 </nav>
+                {% endblock %}
                 <!-- End of Topbar -->
 
                 <!-- Begin Page Content -->
                 <div class="container-fluid">
+                    
 
                     <!-- Page Heading -->
                     <div class="d-sm-flex align-items-center justify-content-between mb-4">
                         <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                                class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                        <a href="{% url 'home' %}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                            class="fas fa-download fa-sm text-white-50"></i> Upload Files</a>
                     </div>
-
+                    {% block content %}
                     <!-- Content Row -->
-                    <div class="row">
+                    {% comment %} <div class="row">
 
                         <!-- Earnings (Monthly) Card Example -->
                         <div class="col-xl-3 col-md-6 mb-4">
@@ -458,11 +457,11 @@
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}
 
                     <!-- Content Row -->
 
-                    <div class="row">
+                    {% comment %} <div class="row">
 
                         <!-- Area Chart -->
                         <div class="col-xl-8 col-lg-7">
@@ -471,75 +470,108 @@
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myAreaChart"></canvas>
+                                        
+                                        {% comment %} <canvas id="myAreaChart"></canvas> {% endcomment %}
+                                        {% comment %} <canvas id="myChart"></canvas>
                                     </div>
+                                        <div class="mt-4 text-center small">
+                                            <span class="mr-2">
+                                                <i></i> 
+                                            </span>
+                                            <span class="mr-2">
+                                                <i></i> 
+                                            </span>
+                                            <span class="mr-2">
+                                                <i></i>
+                                            </span> {% endcomment %}
+                                        
+                                        {% comment %} <script type="text/javascript">
+                                            var ctx = document.getElementById('myChart1').getContext('2d');
+                                            var myChart1 = new Chart(ctx, {
+                                                type: 'doughnut',
+                                                data: {
+                                                    labels: [{% for i in op_in_out_list %} '{{ i }}', {% endfor %}],
+                                                    datasets: [{
+                                                        label:'Operateur In/Out',
+                                                        data: [{% for number in number_list %} '{{ number }}', {% endfor %}],
+                                                        backgroundColor:[
+                                                        'rgba(255, 99, 132, 1)',
+                                                        'rgba(54, 162, 135, 1)',
+                                                        'rgba(255, 206, 86, 1)',
+                                                        'rgba(75, 192, 192, 1)',
+                                                        'rgba(151, 102, 132, 1)',
+                                                        'rgba(153, 99, 132, 1)',
+                                                        'rgba(255, 159, 64, 1)',
+                                                        'rgba(255, 99, 132, 1)',
+                                                        'rgba(54, 162, 135, 1)',
+                                                        'rgba(25, 206, 86, 1)',
+                                                        'rgba(211, 192, 192, 1)',
+                                                        'rgba(234, 102, 132, 1)',
+                                                        'rgba(153, 99, 132, 1)',
+                                                        'rgba(255, 159, 64, 1)',
+                                                        'green',
+                                                        'yellow',
+                                                        ],
+                                            
+                                                        borderColor: [
+                                                        'rgba(54, 162, 135, 1)',
+                                                        'rgba(25, 206, 86, 1)',
+                                                        'rgba(211, 192, 192, 1)',
+                                                        'rgba(234, 102, 132, 1)',
+                                                        'rgba(153, 99, 132, 1)',
+                                                        'rgba(255, 159, 64, 1)',
+                                            
+                                                        ],
+                                            
+                                                        borderWidth: 1
+                                                    }]
+                                                },
+                                            
+                                            })
+                                            </script> {% endcomment %}
+                                        
+                                        
+                                    {% comment %} </div>
                                 </div>
                             </div>
-                        </div>
+                        </div> {% endcomment %}
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
+                        {% comment %} <div class="col-xl-4 col-lg-5">
                             <div class="card shadow mb-4">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
                                     <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    <div class="dropdown no-arrow">
-                                        <a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink"
-                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                            <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
-                                        </a>
-                                        <div class="dropdown-menu dropdown-menu-right shadow animated--fade-in"
-                                            aria-labelledby="dropdownMenuLink">
-                                            <div class="dropdown-header">Dropdown Header:</div>
-                                            <a class="dropdown-item" href="#">Action</a>
-                                            <a class="dropdown-item" href="#">Another action</a>
-                                            <div class="dropdown-divider"></div>
-                                            <a class="dropdown-item" href="#">Something else here</a>
-                                        </div>
-                                    </div>
+                                    
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
-                                    <div class="chart-pie pt-4 pb-2">
-                                        <canvas id="myPieChart"></canvas>
+                                    <div class="chart-area">
+                                        <canvas id="myChart1" width="300" height="300"></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-primary"></i> Direct
+                                            <i class=""></i> 
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-success"></i> Social
+                                            <i class=""></i> 
                                         </span>
                                         <span class="mr-2">
-                                            <i class="fas fa-circle text-info"></i> Referral
+                                            <i class=""></i> 
                                         </span>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </div>  {% endcomment %} 
 
                     <!-- Content Row -->
-                    <div class="row">
+                    {% comment %} <div class="row">
 
                         <!-- Content Column -->
                         <div class="col-lg-6 mb-4">
@@ -581,10 +613,10 @@
                                             aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> {% endcomment %}
 
                             <!-- Color System -->
-                            <div class="row">
+                            {% comment %} <div class="row">
                                 <div class="col-lg-6 mb-4">
                                     <div class="card bg-primary text-white shadow">
                                         <div class="card-body">
@@ -689,19 +721,19 @@
                             </div>
 
                         </div>
-                    </div>
-
+                    </div> {% endcomment %}
+                    {% endblock %}
                 </div>
                 <!-- /.container-fluid -->
 
             </div>
             <!-- End of Main Content -->
-
+            
             <!-- Footer -->
             <footer class="sticky-footer bg-white">
                 <div class="container my-auto">
                     <div class="copyright text-center my-auto">
-                        <span>Copyright &copy; Your Website 2021</span>
+                        <span>Copyright &copy; Golden Commets 2023</span>
                     </div>
                 </div>
             </footer>
@@ -738,6 +770,7 @@
         </div>
     </div>
 
+    {% block script %}
     <!-- Bootstrap core JavaScript-->
     <script src="{% static 'web/vendor/jquery/jquery.min.js' %}"></script>
     <script src="{% static 'web/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
@@ -750,11 +783,116 @@
 
     <!-- Page level plugins -->
     <script src="{% static 'web/vendor/chart.js/Chart.min.js' %}"></script>
+    <script src="{% static 'web/vendor/chart.js/Chart.js' %}"></script>
+
 
     <!-- Page level custom scripts -->
     <script src="{% static 'web/js/demo/chart-area-demo.js' %}"></script>
     <script src="{% static 'web/js/demo/chart-pie-demo.js' %}"></script>
 
+    <script src="//cdn.datatables.net/1.10.12/js/jquery.dataTables.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    {% endblock %}
+    
+
 </body>
+<script type="text/javascript">
+    var ctx = document.getElementById('myChart1').getContext('2d');
+    var myChart1 = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: [{% for i in op_in_out_list %} '{{ i }}', {% endfor %}],
+            datasets: [{
+                label:'Operateur In/Out',
+                data: [{% for number in number_list %} '{{ number }}', {% endfor %}],
+                backgroundColor:[
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 135, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(151, 102, 132, 1)',
+                'rgba(153, 99, 132, 1)',
+                'rgba(255, 159, 64, 1)',
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 135, 1)',
+                'rgba(25, 206, 86, 1)',
+                'rgba(211, 192, 192, 1)',
+                'rgba(234, 102, 132, 1)',
+                'rgba(153, 99, 132, 1)',
+                'rgba(255, 159, 64, 1)',
+                'gree',
+                'yellow',
+                ],
+    
+                borderColor: [
+                'rgba(54, 162, 135, 1)',
+                'rgba(25, 206, 86, 1)',
+                'rgba(211, 192, 192, 1)',
+                'rgba(234, 102, 132, 1)',
+                'rgba(153, 99, 132, 1)',
+                'rgba(255, 159, 64, 1)',
+    
+                ],
+    
+                borderWidth: 1
+            }]
+        },
+    
+    })
+    </script>
+    <script type="text/javascript">
+        var ctx = document.getElementById('myChart').getContext('2d');
+        var myChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: [{% for i in op_in_out_list %} '{{ i }}', {% endfor %}],
+                datasets: [{
+                    label:'',
+                    data: [{% for number in number_list %} '{{ number }}', {% endfor %}],
+                    backgroundColor:[
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 135, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(151, 102, 132, 1)',
+                    'rgba(153, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 135, 1)',
+                    'rgba(25, 206, 86, 1)',
+                    'rgba(211, 192, 192, 1)',
+                    'rgba(234, 102, 132, 1)',
+                    'rgba(153, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'gree',
+                    'yellow',
+                    ],
+        
+                    borderColor: [
+                    'rgba(54, 162, 135, 1)',
+                    'rgba(25, 206, 86, 1)',
+                    'rgba(211, 192, 192, 1)',
+                    'rgba(234, 102, 132, 1)',
+                    'rgba(153, 99, 132, 1)',
+                    'rgba(255, 159, 64, 1)',
+        
+                    ],
+        
+                    borderWidth: 1
+                }]
+            },
+        
+            options: {
+                scales: {
+                    yAxes: [{
+                        ticks: {
+                            beginAtZero: true
+                        }
+                    }]
+                }
+            }
+        })
+        </script>
 
 </html>
