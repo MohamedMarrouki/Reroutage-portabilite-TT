@@ -4,6 +4,10 @@ from django.conf import settings as ss
 from django.db import OperationalError
 from django.db.models import Sum
 from django.contrib import auth
+from django.utils import timezone
+import csv
+from django.core.files.storage import default_storage
+from datetime import datetime
 
 
 # Create your views here.
@@ -107,12 +111,58 @@ def send_files(request):
         nomfich=myfile
         #print(nomfich[0])
         try:
-         myuploadfile(myfiles=nomfich[0],time).save()
+           uploadfile(fileuploaded=nomfich[0]).save()
         except OperationalError as e:
            print(e)
-        read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
-        somme()
+        dt=timezone.localtime()
+        nom_modif=replace(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
+        index = nom_modif.rfind('\\')
+        sous_chaine = nom_modif[index+1:] 
+        print(sous_chaine)
+        exists = myuploadfile.objects.filter(myfiles=sous_chaine).exists()
+        if exists==False:
+         upf=myuploadfile(myfiles=sous_chaine,date_upload=dt)
+         try:
+            upf.save()
+         except OperationalError as e:
+            print(e)
+         file = default_storage.open(nom_modif)
+      #   print(file)
+         decoded_file = file.read().decode('utf-8').splitlines()
+         reader = csv.DictReader(decoded_file)
+         file_upload = myuploadfile.objects.get(id=upf.id)
+      #   print(file_upload)
+      #   print(upf.id)
+      # A number|calledMNPInfo&Bnumber|||origine trafic|callday|calltime|||duration|ALL|Calltype|callreference|pulse|node|||Intrunk|Outtrunk|
+         for row in reader:
+           date_string = row['callday']  # Example date string in DD-MM-YYYY format
+           date_object = datetime.strptime(date_string, '%d-%m-%Y')
+           converted_date_string = date_object.strftime('%Y-%m-%d')
+            # Création d'une instance du modèle LigneCSV avec les données du CSV
+           ligne_csv = Ligne_fichier(
+                  file_upload=file_upload,
+                  Anumber=row['A number'],
+                  Bnumber=row['calledMNPInfo&Bnumber'],
+                  origine_trafic=row['origine trafic'],
+                  call_day=converted_date_string,
+                  call_time=row['calltime'],
+                  call_duration=row['duration'],
+                  ALL=row['ALL'],
+                  Calltype=row['Calltype'],
+                  callreference=row['callreference'],
+                  pulse=row['pulse'],
+                  node=row['node'],
+                  Intrunk=row['Intrunk'],
+                  Outtrunk=row['Outtrunk']
+               )
+           ligne_csv.save()
+        else:
+           print('existe')
+           context = {'exists':exists}
+      #   read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
+      #   somme()
         
    #    #   print(nomfich1)
    #    #   for f in myfile:
-    return redirect("home")
+            
+    return render(request, 'pages/upload_file_final.html', context)

@@ -2,11 +2,14 @@ from django.db import models
 
 # Create your models here.
 class myuploadfile(models.Model):
-    myfiles = models.FileField(upload_to='')
+    myfiles = models.FileField()
     date_upload=models.DateTimeField()
 
 #     def __str__(self):
 #         return self.f_name
+
+class uploadfile(models.Model):
+    fileuploaded = models.FileField(upload_to='')
 
 class Ooredoo(models.Model):
     # name_OO = models.CharField(max_length=500, null=True)
@@ -24,17 +27,17 @@ class Ligne_fichier(models.Model):
     file_upload=models.ForeignKey(myuploadfile,on_delete=models.CASCADE)
     Anumber=models.IntegerField(null=True)
     Bnumber=models.IntegerField(null=True)
-    origine_trafic=models.CharField(max_length=255)
-    call_day=models.DateField()
-    call_time=models.DateField()
+    origine_trafic=models.CharField(max_length=255,null=True)
+    call_day=models.DateField(null=True)
+    call_time=models.TimeField(null=True)
     call_duration=models.IntegerField(null=True)
-    ALL=models.CharField(max_length=20)
-    Calltype=models.CharField(max_length=20)
+    ALL=models.CharField(max_length=20,null=True)
+    Calltype=models.CharField(max_length=20,null=True)
     callreference=models.IntegerField(null=True)
     pulse=models.IntegerField(null=True)
-    node=models.CharField(max_length=255)
-    Intrunk=models.CharField(max_length=255)
-    Outtrunk=models.CharField(max_length=255)
+    node=models.CharField(max_length=255,null=True)
+    Intrunk=models.CharField(max_length=255,null=True)
+    Outtrunk=models.CharField(max_length=255,null=True)
     
     
     

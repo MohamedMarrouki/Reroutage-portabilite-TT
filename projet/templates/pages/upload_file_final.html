@@ -37,9 +37,9 @@
                             <div class="text-center">
                                 <h1 class="h4 text-gray-900 mb-4">Upload file!</h1>
                             </div>
-                            {% if error %}
+                            {% if exists %}
                                 <div class="alert alert-danger" role="alert" data-mdb-color="danger">
-                                {{ message }}
+                                file already exists
                                 </div>
                             {% endif %}
 
