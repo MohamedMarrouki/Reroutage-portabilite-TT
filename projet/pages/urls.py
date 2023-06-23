@@ -4,5 +4,6 @@ from . import views
 urlpatterns = [
     path('home', views.home, name='home'),
     path('upload',views.send_files,name='upload'),
-    path('chart',views.chart,name='chart')
+    path('chart',views.chart,name='chart'),
+    path('affichage', views.filtrer_produits, name='filtrer_lignes'),
 ]

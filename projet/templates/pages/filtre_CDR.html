@@ -1,0 +1,12 @@
+<form method="post" action="{% url 'filtrer_lignes' %}">
+    {% csrf_token %} 
+    {{ form }}
+    <button type="submit">Filtrer</button>
+</form>
+
+{% for l in ligne %}
+    {{l.Anumber}}  
+    {{l.call_day}}
+{% empty %}
+    <p>Aucune ligne trouvée.</p>
+{% endfor %}

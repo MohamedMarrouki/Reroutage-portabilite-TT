@@ -1,5 +1,6 @@
 from django.shortcuts import render,redirect
 from . models import *
+from .forms import *
 from django.conf import settings as ss
 from django.db import OperationalError
 from django.db.models import Sum
@@ -166,3 +167,30 @@ def send_files(request):
    #    #   for f in myfile:
             
     return render(request, 'pages/upload_file_final.html', context)
+ 
+ 
+def filtrer_produits(request):
+   Lignef = Ligne_fichier.objects.all()
+   day=request.POST.get('call_day')
+   origin=request.POST.get('origin')
+   if(str(origin).lower()=='international'):
+      Lignes = Lignef.filter(call_day=day,origine_trafic='international')
+      context = {
+        'form': FiltreForm,
+        'ligne':Lignes
+      }
+   elif(str(origin).lower()=='national'):
+      Lignes = Lignef.filter(call_day=day).exclude(origine_trafic='international')
+      context = {
+        'form': FiltreForm,
+        'ligne':Lignes
+      }
+   else:
+      context = {
+         'form': FiltreForm,
+         'ligne':Lignef
+         }
+   
+      
+
+   return render(request, 'pages/filtre_CDR.html', context)
