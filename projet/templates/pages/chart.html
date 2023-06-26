@@ -412,7 +412,7 @@
                                     <div class="chart-area">
                                         
                                         {% comment %} <canvas id="myAreaChart"></canvas> {% endcomment %}
-                                        <canvas id="myChart"></canvas>
+                                        <canvas id="myChart" width="100" height="35"></canvas>
                                     </div>
                                         <div class="mt-4 text-center small">
                                             <span class="mr-2">
@@ -477,20 +477,37 @@
                         </div>
 
                         <!-- Pie Chart -->
-                        <div class="col-xl-4 col-lg-5">
-                            <div class="card shadow mb-4">
+                        <div class="col-xl-4 col-lg-6">
+                            <div class="card shadow mb-6">
                                 <!-- Card Header - Dropdown -->
                                 <div
                                     class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                    <h6 class="m-0 font-weight-bold text-primary">Revenue Sources</h6>
-                                    
+                                    <h6 class="m-0 font-weight-bold text-primary">Earnings Overview</h6>
                                 </div>
                                 <!-- Card Body -->
                                 <div class="card-body">
                                     <div class="chart-area">
-                                        <canvas id="myChart1" width="300" height="300"></canvas>
+                                        <canvas id="myChart1" width="100" height="75"></canvas>
                                     </div>
                                     <div class="mt-4 text-center small">
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
+                                        <span class="mr-2">
+                                            <i class=""></i> 
+                                        </span>
                                         <span class="mr-2">
                                             <i class=""></i> 
                                         </span>
@@ -505,7 +522,33 @@
                             </div>
                         </div>
                     </div> 
-
+                    <div class="card shadow mb-4">
+                        <div class="card-header py-3">
+                            <h6 class="m-0 font-weight-bold text-primary">DataTables Example</h6>
+                        </div>
+                        <div class="card-body">
+                            <div class="table-responsive">
+                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                    <thead>
+                                        <tr>
+                                            <th>Ooredoo IN</th>
+                                            <th>Ooredoo OUT</th>
+                                            <th>Orange IN</th>
+                                            <th>Orange OUT</th>
+                                        </tr>
+                                    </thead>
+                                    
+                                    <tbody>
+                                        <tr>{% for number in number_list %}
+                                            <td>{{number}}</td>{% endfor %}
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
                     <!-- Content Row -->
                     {% comment %} <div class="row">
 

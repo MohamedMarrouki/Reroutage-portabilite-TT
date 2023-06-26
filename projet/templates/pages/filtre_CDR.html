@@ -25,6 +25,34 @@
     <!-- Custom styles for this template-->
     <link href="{% static 'web/css/sb-admin-2.min.css' %}" rel="stylesheet">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>	
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.22/css/jquery.dataTables.min.css">
+    <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.6.4/css/buttons.dataTables.min.css">
+
+    {% comment %} <script src="{% static 'web/js/table2excel.js' %}"></script>
+
+        <script>
+        function tableexcel(){
+            var table2excel = new Table2Excel();
+            table2excel.export(document.querySelectorAll("example"));
+        }
+        </script> {% endcomment %}
+
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.17.0/xlsx.full.min.js"></script>
+
+<script>
+function export_data(){
+	let data=document.getElementById('example');
+	var fp=XLSX.utils.table_to_book(data,{sheet:'vishal'});
+	XLSX.write(fp,{
+		bookType:'xlsx',
+		type:'base64'
+	});
+	XLSX.writeFile(fp, 'test.xlsx');
+}
+</script>
+
+
 </head>
 <body id="page-top">
 <!-- Page Wrapper -->
@@ -163,15 +191,52 @@
                           </div>
                           <hr>
                         </form>
+                        {% comment %} <script>
+                            function exportTableToExcel(tableID, filename = ''){
+                                var downloadLink;
+                                var dataType = 'application/vnd.ms-excel';
+                                var tableSelect = document.getElementById(tableID);
+                                var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
+                                
+                                // Specify file name
+                                filename = filename?filename+'.xls':'excel_data.xls';
+                                
+                                // Create download link element
+                                downloadLink = document.createElement("a");
+                                
+                                document.body.appendChild(downloadLink);
+                                
+                                if(navigator.msSaveOrOpenBlob){
+                                    var blob = new Blob(['\ufeff', tableHTML], {
+                                        type: dataType
+                                    });
+                                    navigator.msSaveOrOpenBlob( blob, filename);
+                                }else{
+                                    // Create a link to the file
+                                    downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
+                                
+                                    // Setting the file name
+                                    downloadLink.download = filename;
+                                    
+                                    //triggering the function
+                                    downloadLink.click();
+                                }
+                            }
+                            </script> {% endcomment %}
 
                     <!-- DataTales Example -->
                     <div class="card shadow mb-4">
                         <div class="card-header py-3">
-                            <h6 class="m-0 font-weight-bold text-primary">Results</h6>
+                            <h6 class="m-0 font-weight-bold text-primary">
+                                Results
+                                <div class="col-md-50" style="display: inline-block;">
+                                    <input type="button" onclick="export_data()" value="Export" class="btn btn-primary">
+                                </div>
+                            </h6>
                         </div>
                         <div class="card-body">
                             <div class="table-responsive">
-                                <table class="table table-bordered" id="dataTable" width="100%" cellspacing="0">
+                                <table class="table table-bordered" id="example" width="100%" cellspacing="0">
                                     <thead>
                                         <tr>
                                             <th>Anumber</th>
