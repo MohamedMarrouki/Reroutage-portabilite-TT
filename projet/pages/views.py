@@ -157,6 +157,7 @@ def send_files(request):
                   Outtrunk=row['Outtrunk']
                )
            ligne_csv.save()
+           context = {'exists':exists}
         else:
            print('existe')
            context = {'exists':exists}
@@ -174,6 +175,11 @@ def filtrer_produits(request):
    day=request.POST.get('call_day')
    origin=request.POST.get('origin')
    trunk=request.POST.get('trunk')
+   user = auth.get_user(request)
+   if user.is_authenticated:
+        nom_utilisateur = user.username
+        email_utilisateur = user.email
+        nom = user.last_name + " " + user.first_name
    if(trunk=='OUTORGO' or trunk=='OUTODOO'):
       test='out'
    elif(trunk=='INORDI' or trunk=='INORGI'):
@@ -186,13 +192,19 @@ def filtrer_produits(request):
          Lignes = Lignef.filter(call_day=day,origine_trafic='international',Outtrunk=trunk)
          context = {
          'form': FiltreForm,
-         'ligne':Lignes
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
       elif(test=='in'):
          Lignes = Lignef.filter(call_day=day,origine_trafic='international',Intrunk=trunk)
          context = {
          'form': FiltreForm,
-         'ligne':Lignes
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
       else:
          Lignes = Lignef.filter(call_day=day,origine_trafic='international')
@@ -205,24 +217,36 @@ def filtrer_produits(request):
          Lignes = Lignef.filter(call_day=day,Outtrunk=trunk).exclude(origine_trafic='international')
          context = {
          'form': FiltreForm,
-         'ligne':Lignes
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
       elif(test=='in'):
          Lignes = Lignef.filter(call_day=day,Intrunk=trunk).exclude(origine_trafic='international')
          context = {
          'form': FiltreForm,
-         'ligne':Lignes
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
       else:
          Lignes = Lignef.filter(call_day=day).exclude(origine_trafic='international')
          context = {
          'form': FiltreForm,
-         'ligne':Lignes
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
    else:
       context = {
          'form': FiltreForm,
-         'ligne':Lignef
+         'ligne':Lignef,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
          }
       
 
