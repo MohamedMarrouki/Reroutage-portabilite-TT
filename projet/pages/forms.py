@@ -10,4 +10,11 @@ class FiltreForm(forms.Form):
         ('national', 'National'),
         ('international', 'International'),
     ])
+    trunk=forms.ChoiceField(label='Select an option', choices=[
+        ('ALL', 'ALL'),
+        ('INORDI', 'Ooredoo In'),
+        ('OUTODOO', 'Ooredoo Out'),
+        ('INORGI', 'Orange In'),
+        ('OUTORGO', 'Orange Out'),
+    ])
     

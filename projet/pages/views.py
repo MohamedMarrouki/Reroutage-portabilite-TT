@@ -173,24 +173,57 @@ def filtrer_produits(request):
    Lignef = Ligne_fichier.objects.all()
    day=request.POST.get('call_day')
    origin=request.POST.get('origin')
-   if(str(origin).lower()=='international'):
-      Lignes = Lignef.filter(call_day=day,origine_trafic='international')
-      context = {
-        'form': FiltreForm,
-        'ligne':Lignes
-      }
+   trunk=request.POST.get('trunk')
+   if(trunk=='OUTORGO' or trunk=='OUTODOO'):
+      test='out'
+   elif(trunk=='INORDI' or trunk=='INORGI'):
+      test='in'
+   else:
+      test='all' 
+   
+   if(str(origin).lower()=='international' ):
+      if(test=='out'):
+         Lignes = Lignef.filter(call_day=day,origine_trafic='international',Outtrunk=trunk)
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
+      elif(test=='in'):
+         Lignes = Lignef.filter(call_day=day,origine_trafic='international',Intrunk=trunk)
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
+      else:
+         Lignes = Lignef.filter(call_day=day,origine_trafic='international')
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
    elif(str(origin).lower()=='national'):
-      Lignes = Lignef.filter(call_day=day).exclude(origine_trafic='international')
-      context = {
-        'form': FiltreForm,
-        'ligne':Lignes
-      }
+      if(test=='out'):
+         Lignes = Lignef.filter(call_day=day,Outtrunk=trunk).exclude(origine_trafic='international')
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
+      elif(test=='in'):
+         Lignes = Lignef.filter(call_day=day,Intrunk=trunk).exclude(origine_trafic='international')
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
+      else:
+         Lignes = Lignef.filter(call_day=day).exclude(origine_trafic='international')
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes
+         }
    else:
       context = {
          'form': FiltreForm,
          'ligne':Lignef
          }
-   
       
 
    return render(request, 'pages/filtre_CDR.html', context)
