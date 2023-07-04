@@ -19,10 +19,10 @@ from datetime import datetime
 nomfich=''
 
 def home(request):
-    context = {
+   context = {
         "data":myuploadfile.objects.all(),
     }
-    return render(request,"pages/upload_file_final.html",context)
+   return render(request,"pages/upload_file_final.html",context)
    #return render(request,"pages/upload_file_final.html")
    
 def replace(nom_fich):
@@ -43,8 +43,7 @@ def read_fich(nom_fich):
    import pandas as pd
    import numpy as np
    n=0
-   nom_modif=replace(nom_fich)
-   cdr_file = pd.read_csv(nom_modif)
+   cdr_file = pd.read_csv(nom_fich)
    # cdr_file.columns
    cdr18=cdr_file["Intrunk"].values
    cdr19=cdr_file["Outtrunk"].values
@@ -132,6 +131,8 @@ def send_files(request):
          decoded_file = file.read().decode('utf-8').splitlines()
          reader = csv.DictReader(decoded_file)
          file_upload = myuploadfile.objects.get(id=upf.id)
+         read_fich(str(nom_modif))
+         somme()
       #   print(file_upload)
       #   print(upf.id)
       # A number|calledMNPInfo&Bnumber|||origine trafic|callday|calltime|||duration|ALL|Calltype|callreference|pulse|node|||Intrunk|Outtrunk|
@@ -161,8 +162,6 @@ def send_files(request):
         else:
            print('existe')
            context = {'exists':exists}
-      #   read_fich(str(ss.MEDIA_ROOT)+'\\'+str(nomfich[0]))
-      #   somme()
         
    #    #   print(nomfich1)
    #    #   for f in myfile:
@@ -171,9 +170,12 @@ def send_files(request):
  
  
 def filtrer_produits(request):
+   test='none'
    Lignef = Ligne_fichier.objects.all()
+   paysf=Country.objects.all()
    day=request.POST.get('call_day')
    origin=request.POST.get('origin')
+   print(origin)
    trunk=request.POST.get('trunk')
    user = auth.get_user(request)
    if user.is_authenticated:
@@ -182,72 +184,58 @@ def filtrer_produits(request):
         nom = user.last_name + " " + user.first_name
    if(trunk=='OUTORGO' or trunk=='OUTODOO'):
       test='out'
-   elif(trunk=='INORDI' or trunk=='INORGI'):
+   if(trunk=='INORDI' or trunk=='INORGI'):
       test='in'
-   else:
+   if(trunk=='ALL'):
       test='all' 
-   
-   if(str(origin).lower()=='international' ):
-      if(test=='out'):
-         Lignes = Lignef.filter(call_day=day,origine_trafic='international',Outtrunk=trunk)
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-      elif(test=='in'):
-         Lignes = Lignef.filter(call_day=day,origine_trafic='international',Intrunk=trunk)
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-      else:
-         Lignes = Lignef.filter(call_day=day,origine_trafic='international')
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes
-         }
-   elif(str(origin).lower()=='national'):
-      if(test=='out'):
-         Lignes = Lignef.filter(call_day=day,Outtrunk=trunk).exclude(origine_trafic='international')
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-      elif(test=='in'):
-         Lignes = Lignef.filter(call_day=day,Intrunk=trunk).exclude(origine_trafic='international')
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-      else:
-         Lignes = Lignef.filter(call_day=day).exclude(origine_trafic='international')
-         context = {
-         'form': FiltreForm,
-         'ligne':Lignes,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-   else:
-      context = {
-         'form': FiltreForm,
-         'ligne':Lignef,
-              'nom_utilisateur': nom_utilisateur,
-               'email_utilisateur': email_utilisateur,
-               'nom': nom
-         }
-      
 
+   if(test=='out'):
+      Lignes = Lignef.filter(call_day=day,Outtrunk=trunk,Anumber__startswith=origin)
+      context = {
+      'form': FiltreForm,
+      'ligne':Lignes,
+      'nom_utilisateur': nom_utilisateur,
+      'email_utilisateur': email_utilisateur,
+      'nom': nom
+      }
+   elif(test=='in'):
+         Lignes = Lignef.filter(call_day=day,Intrunk=trunk,Anumber__startswith=origin)
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
+         }
+   elif(test=='all'):
+         Lignes = Lignef.filter(call_day=day,Anumber__startswith=origin)
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
+         }
+   elif(test=='none'):
+         Lignes = Lignef
+         context = {
+         'form': FiltreForm,
+         'ligne':Lignes,
+              'nom_utilisateur': nom_utilisateur,
+               'email_utilisateur': email_utilisateur,
+               'nom': nom
+         }
    return render(request, 'pages/filtre_CDR.html', context)
+
+def pays():
+   file = default_storage.open('indicatifs.csv')
+   decoded_file = file.read().decode('utf-8').splitlines()
+   reader = csv.DictReader(decoded_file)
+   for row in reader:
+      Countrys = Country(
+                  Pays=row['Pays'],
+                  Code=row['Code']
+               )
+      Countrys.save()
+   return('cc')
+   

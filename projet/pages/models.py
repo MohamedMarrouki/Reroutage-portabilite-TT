@@ -39,6 +39,11 @@ class Ligne_fichier(models.Model):
     Intrunk=models.CharField(max_length=255,null=True)
     Outtrunk=models.CharField(max_length=255,null=True)
     
+class Country(models.Model):
+    Pays=models.CharField(max_length=100)
+    Code=models.CharField(max_length=10)
+
+    
     
     
     

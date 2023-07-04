@@ -1,4 +1,5 @@
 from django import forms
+from .models import *
 
 class DateInput(forms.DateInput):
     input_type='date'
@@ -6,10 +7,8 @@ class DateInput(forms.DateInput):
 
 class FiltreForm(forms.Form):
     call_day=forms.DateField(widget=DateInput)
-    origin=forms.ChoiceField(label='Select an option', choices=[
-        ('national', 'National'),
-        ('international', 'International'),
-    ])
+    origin=forms.ChoiceField(label='Select an option', choices=Country.objects.values_list('Code','Pays')
+    )
     trunk=forms.ChoiceField(label='Select an option', choices=[
         ('ALL', 'ALL'),
         ('INORDI', 'Ooredoo In'),
