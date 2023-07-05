@@ -70,6 +70,25 @@ def read_fich(nom_fich):
    #       n=n+1
    # print(n)
    
+def nbrpays():
+   countries = Country.objects.all()
+
+   # Iterate over the country objects
+   for country in countries:
+      # Get the country code
+      country_code = country.Code
+
+      # Count the number of calls from the given country code
+      call_count = Ligne_fichier.objects.filter(
+         Anumber__startswith=country_code[:3]
+      ).count()
+
+      # Update the call_count field in the current country object
+      country.call_count = call_count
+      country.save()
+   
+   
+   
 def somme():
    total_in_oo = Ooredoo.objects.aggregate(total_in_oo=Sum('in_OO'))
    total_out_oo = Ooredoo.objects.aggregate(total_out_oo=Sum('out_OO'))
@@ -90,8 +109,17 @@ def chart(request):
    oo_out=somme()[1]
    or_in=somme()[2]
    or_out=somme()[3]
+   nom_pays=[]
+   payscalldata=[]
    op_in_out_list = ['Ooredoo In', 'Ooredoo Out', 'Orange In', 'Orange Out']
    number_list = [oo_in, oo_out, or_in, or_out]
+   my_countries=Country.objects.order_by('-call_count')[:5]
+   for p in my_countries:
+      cc=str(p.Pays)+'(+'+str(p.Code)+')'
+      nom_pays.append(cc)
+      payscalldata.append(p.call_count)
+   print(nom_pays)
+   print(payscalldata)
    user = auth.get_user(request)
    if user.is_authenticated:
         nom_utilisateur = user.username
@@ -100,7 +128,9 @@ def chart(request):
    context = {'op_in_out_list':op_in_out_list, 'number_list':number_list,
               'nom_utilisateur': nom_utilisateur,
                'email_utilisateur': email_utilisateur,
-               'nom': nom}
+               'nom': nom,
+               'pays_nom':nom_pays,
+               'appel_pays':payscalldata}
    return render(request, 'pages/chart.html', context)
    
 
@@ -158,6 +188,7 @@ def send_files(request):
                   Outtrunk=row['Outtrunk']
                )
            ligne_csv.save()
+           nbrpays()
            context = {'exists':exists}
         else:
            print('existe')

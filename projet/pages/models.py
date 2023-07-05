@@ -42,6 +42,7 @@ class Ligne_fichier(models.Model):
 class Country(models.Model):
     Pays=models.CharField(max_length=100)
     Code=models.CharField(max_length=10)
+    call_count=models.IntegerField(null=True)
 
     
     
